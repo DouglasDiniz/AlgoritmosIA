@@ -1,12 +1,6 @@
 <!doctype html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	
-	<title>
-		Perceptron Simples
-	</title>
-	
 	<!-- JQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
@@ -15,71 +9,79 @@
 	
 	<!-- Perceptron Simples	-->
 	<script src="Perceptron.js"></script>
+
+	<meta charset="utf-8" />
+	
+	<title>
+		Perceptron Simples
+	</title>
 </head>
-<body>
-	<div id="container"></div>
+<body id="container">
 	
 	<script>
-		var separarClasse = function(dados, posicao, saidaDesejada){
-			var conjunto = [];
-			
-			for(var i=0; i < dados.length; i++){
-				if(dados[i].output == saidaDesejada) conjunto.push(dados[i].inputs[posicao]);
-			}
-			
-			return conjunto;
-		};
-	
-		var training_set = [
-			{inputs: [ 0.3,   0.7], output: 1},
-			{inputs: [-0.6,   0.3], output: 0},
-			{inputs: [-0.1,  -0.8], output: 0},			
-			{inputs: [ 0.1, -0.45], output: 1}
-		];
-		
-		var neuronio = new Perceptron();
-		
-		neuronio.setTaxaAprendizado(0.15);		
-		neuronio.treinar(training_set);
-		
-		var pesagens = neuronio.getHistoricoPesos();
-		
-		for(var i=0; i < pesagens.length; i++){
-			var classe_1 = {
-				x: separarClasse(training_set, 0, 0),
-				y: separarClasse(training_set, 1, 0),
-				name: 'Classe 1',
-				mode: 'markers'
+		$( document ).ready(function() {
+			var separarClasse = function(dados, posicao, saidaDesejada){
+				var conjunto = [];
+				
+				for(var i=0; i < dados.length; i++){
+					if(dados[i].output == saidaDesejada) conjunto.push(dados[i].inputs[posicao]);
+				}
+				
+				return conjunto;
 			};
+		
+			var training_set = [
+				{inputs: [ 0.3,   0.7], output: 1},
+				{inputs: [-0.6,   0.3], output: 0},
+				{inputs: [ 0.2,   0.2], output: 1},
+				{inputs: [-0.5,   0.3], output: 0},
+				{inputs: [-0.1,  -0.8], output: 0},			
+				{inputs: [ 0.1, -0.45], output: 1}
+			];
+			
+			var neuronio = new Perceptron();
+			
+			neuronio.setTaxaAprendizado(0.15);		
+			neuronio.treinar(training_set);
+			
+			var pesagens = neuronio.getHistoricoPesos();
+			
+			var classe_azul = {
+					x: separarClasse(training_set, 0, 0),
+					y: separarClasse(training_set, 1, 0),
+					name: 'Classe Azul',
+					mode: 'markers'
+				};
 
-			var classe_2 = {
+			var classe_laranja = {
 				x: separarClasse(training_set, 0, 1),
 				y: separarClasse(training_set, 1, 1),
-				name: 'Classe 2',
+				name: 'Classe Laranja',
 				mode: 'markers'
 			};
 			
-			var reta = {
-				x: [ pesagens[i][1], pesagens[i][1] * -1],
-				y: [ pesagens[i][0] * -1, pesagens[i][0]],
-				mode: 'lines',
-				name: 'Separação encontrada',
-				marker: {
-					color: 'rgb(142, 124, 195)',
-					size: 10
-				}
-			};			
+			for(var i=0; i < pesagens.length; i++){
+				var reta = {
+					x: [ pesagens[i][1], pesagens[i][1] * -1],
+					y: [ pesagens[i][0] * -1, pesagens[i][0]],
+					mode: 'lines',
+					name: 'Separação encontrada',
+					marker: {
+						color: 'rgb(142, 124, 195)',
+						size: 10
+					}
+				};			
 
-			$("#container").append('<div id="' + i + '" />');
-			
-			var layout = {
-			  title: 'Aprendizado na época ' + (i+1)
-			};
+				$("#container").append('<div id="' + i + '" />');
+				
+				var layout = {
+				  title: 'Época ' + (i+1)
+				};
 
-			Plotly.newPlot('' + i, [ classe_1, classe_2, reta ], layout);
-		}
-		
-		console.log(neuronio.executar([0.5, 0.5]) == 1);
+				Plotly.newPlot('' + i, [ classe_azul, classe_laranja, reta ], layout);
+			}			
+			console.log(neuronio.executar([0.5, 0.5]) == 1);
+		});
 	</script>
 </body>
 </html>

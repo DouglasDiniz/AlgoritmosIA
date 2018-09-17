@@ -1,4 +1,4 @@
-Perceptron = function(){	
+function Perceptron(){	
 	this.bias = 0;
 	this.pesos = [];
 	this.taxaAprendizado = 0.25;
@@ -28,7 +28,14 @@ Perceptron = function(){
 	}
 	
 	this.treinar = function(dados){
+		for(var i=0; i < dados.length; i++){
+			dados[i].inputs = dados[i].inputs.concat(this.bias);
+		}
+		
 		this.pesagemInicial(dados[0].inputs.length);
+		
+		console.log('Treinado:');
+		console.log(dados);
 		
 		var epoca = 0;
 		var erro = true;
@@ -66,10 +73,36 @@ Perceptron = function(){
 		
 		for(var j=0; j < inputs.length; j++){			
 			somatorio += inputs[j] * this.pesos[j];
-		}
-		
-		somatorio += this.bias;
+		}		
 		
 		return this.bipolar(somatorio);		
 	};
 }
+
+/*
+class User {
+
+  constructor(name) {
+    // invokes the setter
+    this.name = name;
+  }
+
+  get name() {
+    return this._name;
+  }
+
+  set name(value) {
+    if (value.length < 4) {
+      alert("Name is too short.");
+      return;
+    }
+    this._name = value;
+  }
+
+}
+let user = new User("John");
+alert(user.name); // John
+
+user = new User(""); // Name too short.
+
+*/
