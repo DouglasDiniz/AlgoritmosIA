@@ -19,10 +19,6 @@ function Perceptron(){
 		}
 	};
 	
-	this.sigmoid = function(u){
-		return (1 / (1 - Math.exp(-1*u)));
-	};	
-	
 	this.bipolar = function(u){
 		return (u > 0 ? 1 : 0) 
 	}
@@ -34,7 +30,7 @@ function Perceptron(){
 		
 		this.pesagemInicial(dados[0].inputs.length);
 		
-		console.log('Treinado:');
+		console.log('Entradas:');
 		console.log(dados);
 		
 		var epoca = 0;
@@ -60,6 +56,9 @@ function Perceptron(){
 			
 			epoca++;
 		}
+		
+		console.log('Pesos:');
+		console.log(this.historicoPesos);
 	};
 	
 	this.recalcularPesos = function(diferenca, inputs){
@@ -78,31 +77,3 @@ function Perceptron(){
 		return this.bipolar(somatorio);		
 	};
 }
-
-/*
-class User {
-
-  constructor(name) {
-    // invokes the setter
-    this.name = name;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  set name(value) {
-    if (value.length < 4) {
-      alert("Name is too short.");
-      return;
-    }
-    this._name = value;
-  }
-
-}
-let user = new User("John");
-alert(user.name); // John
-
-user = new User(""); // Name too short.
-
-*/
